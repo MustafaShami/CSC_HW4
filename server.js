@@ -154,14 +154,13 @@ router.route('/movies')
                                     as: "movieReview" //the name of the new aggregated field we are making
                                 }
                         },
-                        {
-                            $addFields: //new data that will be included in the response (average review of the movie)
-                            {
-                                avgRating:
-                                    {$avg: "$movieReview.rating"}
-                            }
-
-                        }
+                        // {
+                        //     $addFields: //new data that will be included in the response (average review of the movie)
+                        //     {
+                        //         avgRating:
+                        //             {$avg: "$movieReview.rating"}
+                        //     }
+                        // }
                     ])
                     .sort({avgRating: -1}) //sort -1 (descending order)
                         .exec(function(err, movieReview) //have to execute the aggregation
@@ -242,7 +241,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                     Movie.aggregate([ //pipeline for aggregating reviews with movie object
                         {
                             //want reviews specific to the title parameter in the request
-                            $match: {title: req.param[0]}
+                            $match: {title: req.param['0']}
                         },
                         {
                             $lookup:
@@ -253,14 +252,13 @@ router.route('/movies/*') //routes that require parameter of movie title
                                     as: "movieReview" //the name of the new aggregated field we are making
                                 }
                         },
-                        {
-                            $addFields: //new data that will be included in the response (average review of the movie)
-                                {
-                                    avgRating:
-                                        {$avg: "$movieReview.rating"}
-                                }
-
-                        }
+                        // {
+                        //     $addFields: //new data that will be included in the response (average review of the movie)
+                        //         {
+                        //             avgRating:
+                        //                 {$avg: "$movieReview.rating"}
+                        //         }
+                        // }
                     ])
                         .sort({avgRating: -1}) //sort -1 (descending order)
                         .exec(function(err, movieReview) //have to execute the aggregation
