@@ -13,12 +13,12 @@ try {
 mongoose.set('useCreateIndex', true);
 
 var ReviewSchema = new Schema({
-    username:
+    user:
         {
             type: String,
             required: true
         },
-    movie:
+    movieTitle:
         {
             type: String,
             required: true
@@ -37,6 +37,7 @@ var ReviewSchema = new Schema({
 
 ReviewSchema.pre('save', function(next)
 {
+    var review = this; //maybe?
     next();
 });
 
