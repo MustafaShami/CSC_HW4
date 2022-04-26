@@ -133,7 +133,7 @@ router.route('/movies')
         {
             if(err) //check if error while getting movies from database
             {
-                return res.json(err);
+                return res.json(err, {success:false, message:'There are no movies'});
             }
             if(movies.length == 0) //check if there are any movies in the database
             {
@@ -220,6 +220,7 @@ router.route('/movies/*') //routes that require parameter of movie title
 
 
 router.route("/reviews")
+    //Post new review and store in database
     .post(authJwtController.isAuthenticated, function(req , res) {
         if(!req.body.user || !req.body.movieTitle || !req.body.rating || !req.body.review)
         {
@@ -264,6 +265,22 @@ router.route("/reviews")
                 });
             }
         });
+    })
+
+    //get all the reviews from the database
+    .get(authJwtController.isAuthenticated, function(req, res)
+    {
+        Review.find({}, function(err, reviews) //did not specify constraint for find function so it will return everything in the reviews collection
+        {
+            if(err)
+            {
+                return res.json(err);
+            }
+            if(reviews.length == 0)
+            {
+                return res.status(204);
+            }
+        })
     })
 
 app.use('/', router);
