@@ -12,12 +12,6 @@ try {
 }
 mongoose.set('useCreateIndex', true);
 
-MovieSchema.pre('save', function(next)
-{
-    var movie = this; //maybe?
-    next();
-});
-
 var MovieSchema = new Schema({
     title: {type:String, required:true, index:{unique:true}}, //index:true will make mongo throw code 11000 for duplicated entry
     year: {type:String, required:true},
@@ -28,6 +22,12 @@ var MovieSchema = new Schema({
         {actorName: {type:String, required:true}, characterName:{type:String, required:true}},
         {actorName: {type:String, required:true}, characterName:{type:String, required:true}}
     ]
+});
+
+MovieSchema.pre('save', function(next)
+{
+    var movie = this; //maybe?
+    next();
 });
 
 //return the model to server
