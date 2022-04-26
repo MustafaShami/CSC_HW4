@@ -224,7 +224,7 @@ router.route("/reviews")
     .post(authJwtController.isAuthenticated, function(req , res) {
         if(!req.body.user || !req.body.movieTitle || !req.body.rating || !req.body.review)
         {
-            return res.status(400).json({success: false, message: 'Remember to include username, movie title, rating, and movie review.'});
+            return res.status(400).json({success: false, message: 'Not enough info. Remember to include username, movie title, rating, and movie review.'});
         }
 
         var newReview = new Review(); //creating new review object
