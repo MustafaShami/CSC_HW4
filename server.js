@@ -133,7 +133,7 @@ router.route('/movies')
         {
             if(err) //check if error while getting movies from database
             {
-                return res.json(err, {success:false, message:'There are no movies'});
+                return res.json({success:false, message:'There are no movies'}, err);
             }
             if(movies.length == 0) //check if there are any movies in the database
             {
