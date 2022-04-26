@@ -13,10 +13,11 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
 var Movie = require('./Movies');
+var Review = require('./Reviews');
 
 var app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //makes it for we don't have to do json.parse everytime
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
@@ -216,6 +217,54 @@ router.route('/movies/*') //routes that require parameter of movie title
                 }
         });
     });
+
+
+router.route("/reviews")
+    .post(authJwtController.isAuthenticated, function(req , res) {
+        if(!req.body.user || !req.body.movieTitle || !req.body.rating || !req.body.review)
+        {
+            return res.status(400).json({success: false, message: 'Remember to include username, movie title, rating, and movie review.'});
+        }
+
+        var newReview = new Review(); //creating new review object
+        newReview.user = req.body.user;
+        newReview.movieTitle = req.body.movieTitle;
+        newReview.rating = req.body.rating;
+        newReview.review = req.body.review;
+
+        Movie.findOne({title: req.body.movieTitle}, function(err, movie)
+        {
+            if(err)
+            {
+                return res.json(err);
+            }
+            if(!movie) //check if the movie the user entered a review for even exists
+            {
+                return res.status(400).json({success:false, message: "Movie is not in the database."});
+            }
+            else
+            {
+                newReview.save(function(err)
+                {
+                    if(err)
+                    {
+                        if(err.code == 11000) //check if duplicate review
+                        {
+                            return res.json({success:false, message: 'Failed to save review. (duplicate review).'});
+                        }
+                        else
+                        {
+                            return res.json(err);
+                        }
+                    }
+                    else
+                    {
+                        return res.status(200).json({success: true, message:'Saved Review!'});
+                    }
+                });
+            }
+        });
+    })
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
