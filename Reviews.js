@@ -35,11 +35,11 @@ var ReviewSchema = new Schema({
         }
 });
 
-ReviewSchema.pre('save', function(next)
-{
-    var review = this; //maybe?
-    next();
-});
+// ReviewSchema.pre('save', function(next)
+// {
+//     var review = this; //maybe?
+//     next();
+// });
 
 //return the model to server
 module.exports = mongoose.model('Review', ReviewSchema);
