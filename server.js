@@ -241,7 +241,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                     Movie.aggregate([ //pipeline for aggregating reviews with movie object
                         {
                             //want reviews specific to the title parameter in the request
-                            $match: {title: req.param['0']}
+                            $match: {title: req.params['0']}
                         },
                         {
                             $lookup:
