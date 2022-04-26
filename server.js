@@ -1,5 +1,6 @@
 /*
-CSC3916 HW3
+Mustafa Shami
+CSC3916 HW4
 File: Server.js
 Description: Web API scaffolding for Movie API
  */
@@ -270,7 +271,7 @@ router.route("/reviews")
     //get all the reviews from the database
     .get(authJwtController.isAuthenticated, function(req, res)
     {
-        Review.find({}, function(err, reviews) //did not specify constraint for find function so it will return everything in the reviews collection
+        Review.find().exec(function(err, reviews) //did not specify constraint for find function so it will return everything in the reviews collection
         {
             if(err)
             {
@@ -278,10 +279,14 @@ router.route("/reviews")
             }
             if(reviews.length == 0)
             {
-                return res.status(204);
+                return res.status(204).json({success:false, message:'No reviews in stored.'});
             }
-        })
-    })
+            else if(reviews.length >= 1)
+            {
+                res.status(200).json({success:true , message:'Here is all the reviews that are stored.' , reviews});
+            }
+        });
+    });
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
