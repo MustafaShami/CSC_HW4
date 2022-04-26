@@ -12,15 +12,16 @@ try {
 }
 mongoose.set('useCreateIndex', true);
 
+MovieSchema.pre('save', function(next)
+{
+    var movie = this; //maybe?
+    next();
+});
+
 var MovieSchema = new Schema({
-    title: {type:String, required:true, index:{unique:true}},
+    title: {type:String, required:true, index:{unique:true}}, //index:true will make mongo throw code 11000 for duplicated entry
     year: {type:String, required:true},
-    genre:
-        {
-            type:String,
-            required:true
-            // , enum: ["Action" , "Adventure" , "Comedy" , "Drama" , "Fantasy" , "Horror" , "Mystery" , "Thriller" , "Western"]
-        },
+    genre: {type:String, required:true},
     actors: //want to require 3 actors
     [
         {actorName: {type:String, required:true}, characterName:{type:String, required:true}},
