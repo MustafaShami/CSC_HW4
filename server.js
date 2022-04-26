@@ -141,8 +141,46 @@ router.route('/movies')
                 res.status(204).json({success:false , message:'There are no movies in the database.'});
             }
             else if(movies.length >= 1)
-            {   //return the list of movies
-                res.status(200).json({success:true , message:'Here is all the movies in the database.' , movies});
+            {
+                if(req.query.reviews === "true")//check if user wants the reviews with the movie list
+                {
+                    Movie.aggregate([ //pipeline for aggregating reviews with movie object
+                        {
+                            $lookup:
+                                {
+                                    from: "reviews", //mongoDB collection
+                                    localField: "title", //movie schema
+                                    foreignField: "movieTitle", //reviews schema (title is what movie and reviews have in common and it how we combine appropriate review to each movie
+                                    as: "movieReview" //the name of the new aggregated field we are making
+                                }
+                        },
+                        {
+                            $addFields: //new data that will be included in the response (average review of the movie)
+                            {
+                                avgRating:
+                                    {$avg: "$movieReview.rating"}
+                            }
+
+                        }
+                    ])
+                    .sort({avgRating: -1}) //sort -1 (descending order)
+                        .exec(function(err, movieReview) //have to execute the aggregation
+                        {
+                            if(err)
+                            {
+                                return res.json(err);
+                            }
+                            else
+                            {
+                                return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
+                            }
+                        })
+                }
+                else
+                {
+                    //return the list of movies
+                    res.status(200).json({success:true , message:'Here is all the movies in the database.' , movies});
+                }
             }
         });
     });
