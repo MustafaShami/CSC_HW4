@@ -159,12 +159,12 @@ router.route('/movies')
                             $addFields: //new data that will be included in the response (average review of the movie)
                             {
                                 avgRating:
-                                    {$avg: "$rating"}//{$avg: "$reviews.rating"}
+                                    {$avg: "$reviews.rating"}//{$avg: "$reviews.rating"}
                             }
                         }
                     ])
                     .sort({avgRating: -1}) //sort -1 (descending order)
-                    .exec(function(err, reviews) //have to execute the aggregation
+                    .exec(function(err, movies) //have to execute the aggregation
                         {
                             if(err)
                             {
@@ -172,7 +172,7 @@ router.route('/movies')
                             }
                             else
                             {
-                                return res.json(reviews); //return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
+                                return res.json(movies); //return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
                             }
                         })
                 }
@@ -257,11 +257,11 @@ router.route('/movies/*') //routes that require parameter of movie title
                             $addFields: //new data that will be included in the response (average review of the movie)
                                 {
                                     avgRating:
-                                        {$avg: "$rating"}//{$avg: "$reviews.rating"}
+                                        {$avg: "$reviews.rating"}//{$avg: "$reviews.rating"}
                                 }
                         }
                     ])
-                        //.sort({avgRating: -1}) //sort -1 (descending order)
+                        .sort({avgRating: -1}) //sort -1 (descending order)
                         .exec(function(err, movie) //have to execute the aggregation
                         {
                             if(err)
