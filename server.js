@@ -163,8 +163,8 @@ router.route('/movies')
                             }
                         }
                     ])
-                    //.sort({avgRating: -1}) //sort -1 (descending order)
-                        .exec(function(err, movies) //have to execute the aggregation
+                    .sort({avgRating: -1}) //sort -1 (descending order)
+                    .exec(function(err, reviews) //have to execute the aggregation
                         {
                             if(err)
                             {
@@ -172,7 +172,7 @@ router.route('/movies')
                             }
                             else
                             {
-                                res.json(movies); //return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
+                                return res.json(reviews); //return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
                             }
                         })
                 }
@@ -182,7 +182,7 @@ router.route('/movies')
                     res.status(200).json({success:true , message:'Here is all the movies in the database.' , movies});
                 }
             }
-        });
+        })
     });
 
 
