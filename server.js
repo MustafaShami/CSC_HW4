@@ -172,7 +172,7 @@ router.route('/movies')
                             }
                             else
                             {
-                                return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
+                                return res.status(200).json(movieReview);
                             }
                         })
                 }
@@ -270,13 +270,13 @@ router.route('/movies/*') //routes that require parameter of movie title
                             }
                             else
                             {
-                                return res.status(200).json({success:true , message: "Here's the Movie AND its reviews." , movieReview});
+                                return res.status(200).json(movieReview);
                             }
                         })
                 }
                 else
                 {
-                    //return the list of movies
+                    //return the info of movies
                     res.status(200).json({success:true , message:'Here is information about this movie.' , movie});
                 }
             }
