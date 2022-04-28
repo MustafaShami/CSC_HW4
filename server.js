@@ -164,7 +164,7 @@ router.route('/movies')
                         }
                     ])
                     .sort({avgRating: -1}) //sort -1 (descending order)
-                        .exec(function(err, movieReview) //have to execute the aggregation
+                        .exec(function(err, movies) //have to execute the aggregation
                         {
                             if(err)
                             {
@@ -172,7 +172,7 @@ router.route('/movies')
                             }
                             else
                             {
-                                return res.status(200).json(movieReview);
+                                res.json(movies); //return res.status(200).json({success:true , message: "Here's the Movies AND their reviews." , movieReview});
                             }
                         })
                 }
@@ -262,7 +262,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                         }
                     ])
                         .sort({avgRating: -1}) //sort -1 (descending order)
-                        .exec(function(err, movieReview) //have to execute the aggregation
+                        .exec(function(err, movie) //have to execute the aggregation
                         {
                             if(err)
                             {
@@ -270,7 +270,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                             }
                             else
                             {
-                                return res.status(200).json(movieReview);
+                                res.json(movie); //return res.status(200).json(movieReview);
                             }
                         })
                 }
