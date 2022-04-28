@@ -163,7 +163,7 @@ router.route('/movies')
                             }
                         }
                     ])
-                    .sort({avgRating: -1}) //sort -1 (descending order)
+                    //.sort({avgRating: -1}) //sort -1 (descending order)
                         .exec(function(err, movies) //have to execute the aggregation
                         {
                             if(err)
@@ -261,7 +261,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                                 }
                         }
                     ])
-                        .sort({avgRating: -1}) //sort -1 (descending order)
+                        //.sort({avgRating: -1}) //sort -1 (descending order)
                         .exec(function(err, movie) //have to execute the aggregation
                         {
                             if(err)
