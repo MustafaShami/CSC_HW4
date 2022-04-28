@@ -159,7 +159,7 @@ router.route('/movies')
                             $addFields: //new data that will be included in the response (average review of the movie)
                             {
                                 avgRating:
-                                    {$average: "$reviews.rating"}
+                                    {$avg: "$reviews.rating"}
                             }
                         }
                     ])
@@ -257,7 +257,7 @@ router.route('/movies/*') //routes that require parameter of movie title
                             $addFields: //new data that will be included in the response (average review of the movie)
                                 {
                                     avgRating:
-                                        {$average: "$reviews.rating"}
+                                        {$avg: "$reviews.rating"}
                                 }
                         }
                     ])
