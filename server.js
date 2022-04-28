@@ -152,14 +152,14 @@ router.route('/movies')
                                     from: "reviews", //mongoDB collection
                                     localField: "title", //movie schema
                                     foreignField: "movieTitle", //reviews schema (title is what movie and reviews have in common and it how we combine appropriate review to each movie
-                                    as: "movieReview" //the name of the new aggregated field we are making
+                                    as: "reviews" //the name of the new aggregated field we are making
                                 }
                         },
                         {
                             $addFields: //new data that will be included in the response (average review of the movie)
                             {
                                 avgRating:
-                                    {$avg: "$movieReview.rating"}
+                                    {$average: "$reviews.rating"}
                             }
                         }
                     ])
@@ -250,14 +250,14 @@ router.route('/movies/*') //routes that require parameter of movie title
                                     from: "reviews", //mongoDB collection
                                     localField: "title", //movie schema
                                     foreignField: "movieTitle", //reviews schema (title is what movie and reviews have in common and it how we combine appropriate review to each movie
-                                    as: "movieReview" //the name of the new aggregated field we are making
+                                    as: "reviews" //the name of the new aggregated field we are making
                                 }
                         },
                         {
                             $addFields: //new data that will be included in the response (average review of the movie)
                                 {
                                     avgRating:
-                                        {$avg: "$movieReview.rating"}
+                                        {$average: "$reviews.rating"}
                                 }
                         }
                     ])
